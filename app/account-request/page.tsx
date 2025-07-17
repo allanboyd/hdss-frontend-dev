@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { supabase } from "@/lib/supabase"
 
 // Mock data - in a real app, this would come from your database
@@ -70,7 +70,7 @@ export default function AccountRequestPage() {
     setError("")
 
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('user_account_request')
         .insert([
           {
@@ -99,7 +99,7 @@ export default function AccountRequestPage() {
           reason: "",
         })
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred')
     } finally {
       setIsLoading(false)
@@ -120,7 +120,7 @@ export default function AccountRequestPage() {
                   Request Submitted Successfully!
                 </h2>
                 <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                  Your account request has been submitted and is under review. We'll contact you via email once your account is approved.
+                  Your account request has been submitted and is under review. We&apos;ll contact you via email once your account is approved.
                 </p>
                 <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-8">
                   <div className="flex items-center gap-3">

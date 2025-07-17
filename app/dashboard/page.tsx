@@ -1,6 +1,6 @@
 "use client"
 
-import { Home, Users, FileText, Database, TrendingUp } from "lucide-react"
+import { Home, Users, FileText, Database } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Sidebar } from "@/components/dashboard/sidebar"
