@@ -127,8 +127,9 @@ export default function LoginPage() {
     setForgotPasswordError("")
 
     try {
+      const redirectUrl = typeof window !== 'undefined' ? `${window.location.origin}/reset-password` : undefined
       const { error } = await supabase.auth.resetPasswordForEmail(forgotPasswordEmail, {
-        redirectTo: `${window.location.origin}/reset-password`,
+        redirectTo: redirectUrl,
       })
 
       if (error) {
