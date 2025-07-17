@@ -10,7 +10,7 @@ export interface SwitchProps
 }
 
 const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
-  ({ className, label, description, ...props }, ref) => {
+  ({ label, description, ...props }, ref) => {
     return (
       <div className="flex items-start space-x-3">
         <div className="relative">

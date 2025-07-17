@@ -102,7 +102,7 @@ export function ComingSoon({
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-gray-900">
                     <Sparkles className="w-5 h-5 text-orange-600" />
-                    What's Coming
+                    What&apos;s Coming
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -128,7 +128,7 @@ export function ComingSoon({
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
               <div className="text-sm text-gray-500">
-                We'll notify you when this feature is ready
+                We&apos;ll notify you when this feature is ready
               </div>
             </div>
           </div>

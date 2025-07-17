@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Image from "next/image"
-import Link from "next/link"
+
 import { useRouter } from "next/navigation"
 import { Eye, EyeOff, Loader2, ArrowLeft, CheckCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -85,7 +85,7 @@ export default function LoginPage() {
     setRequestError("")
 
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('user_account_request')
         .insert([
           {
@@ -114,7 +114,7 @@ export default function LoginPage() {
           reason: "",
         })
       }
-    } catch (err) {
+    } catch {
       setRequestError('An unexpected error occurred')
     } finally {
       setIsRequestLoading(false)
@@ -127,7 +127,7 @@ export default function LoginPage() {
     setForgotPasswordError("")
 
     try {
-      const { data, error } = await supabase.auth.resetPasswordForEmail(forgotPasswordEmail, {
+      const { error } = await supabase.auth.resetPasswordForEmail(forgotPasswordEmail, {
         redirectTo: `${window.location.origin}/reset-password`,
       })
 
@@ -137,7 +137,7 @@ export default function LoginPage() {
         setForgotPasswordSuccess(true)
         setForgotPasswordEmail("")
       }
-    } catch (err) {
+    } catch {
       setForgotPasswordError('An unexpected error occurred')
     } finally {
       setIsForgotPasswordLoading(false)
@@ -150,7 +150,7 @@ export default function LoginPage() {
     setError("")
 
     try {
-      const { data, error } = isSignUp 
+      const { error } = isSignUp 
         ? await signUp(email, password)
         : await signIn(email, password)
 
@@ -159,7 +159,7 @@ export default function LoginPage() {
       } else {
         router.push('/dashboard')
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred')
     } finally {
       setIsLoading(false)
@@ -619,7 +619,7 @@ export default function LoginPage() {
                 Request Submitted Successfully!
               </h2>
               <p className="text-gray-600 mb-6">
-                Your account request has been submitted and is under review. We'll contact you via email once your account is approved.
+                Your account request has been submitted and is under review. We&apos;ll contact you via email once your account is approved.
               </p>
               <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
                 <div className="flex items-center gap-2">
@@ -656,7 +656,7 @@ export default function LoginPage() {
                   Reset Your Password
                 </h1>
                 <p className="text-gray-600">
-                  Enter your email address and we'll send you a link to reset your password
+                  Enter your email address and we&apos;ll send you a link to reset your password
                 </p>
               </div>
 
@@ -751,7 +751,7 @@ export default function LoginPage() {
                 Check Your Email
               </h2>
               <p className="text-gray-600 mb-6">
-                We've sent a password reset link to your email address. Please check your inbox and follow the instructions to reset your password.
+                We&apos;ve sent a password reset link to your email address. Please check your inbox and follow the instructions to reset your password.
               </p>
               <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
                 <div className="flex items-center gap-2">
@@ -759,7 +759,7 @@ export default function LoginPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   <p className="text-sm text-amber-700">
-                    If you don't see the email, check your spam folder.
+                    If you don&apos;t see the email, check your spam folder.
                   </p>
                 </div>
               </div>

@@ -4,8 +4,7 @@ import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+
 import { 
   Building2, 
   Users, 
@@ -14,8 +13,6 @@ import {
   Edit, 
   Trash2, 
   MapPin,
-  UserPlus,
-  Settings,
   Search
 } from "lucide-react"
 
@@ -86,7 +83,6 @@ const countries = [
 
 export function SiteManagement() {
   const [activeTab, setActiveTab] = useState("sites")
-  const [showAddForm, setShowAddForm] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
 
   const tabs = [
@@ -120,7 +116,6 @@ export function SiteManagement() {
           <p className="text-gray-600">Manage research sites, users, and countries</p>
         </div>
         <Button 
-          onClick={() => setShowAddForm(true)}
           className="bg-orange-500 hover:bg-orange-600"
         >
           <Plus className="w-4 h-4 mr-2" />

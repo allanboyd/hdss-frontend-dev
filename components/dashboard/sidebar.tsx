@@ -1,5 +1,6 @@
 "use client"
 import Link from "next/link"
+import Image from "next/image"
 import { useRouter, usePathname } from "next/navigation"
 import {
   LayoutDashboard,
@@ -19,7 +20,7 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useAuth } from "@/lib/auth-context"
-import { Badge } from "@/components/ui/badge"
+
 
 const navigationSections = [
   {
@@ -66,9 +67,11 @@ export function Sidebar() {
     <div className="flex flex-col w-64 bg-gradient-to-b from-white to-gray-50 h-full">
       {/* Logo/Brand Section */}
       <div className="flex items-center h-16 px-4 bg-white">
-        <img 
+        <Image 
           src="/images/aphrc_mainlogo.png" 
           alt="APHRC Logo" 
+          width={48}
+          height={48}
           className="h-12 w-auto object-contain"
         />
       </div>
