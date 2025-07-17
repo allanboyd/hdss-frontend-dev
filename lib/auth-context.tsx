@@ -30,7 +30,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     // Listen for auth changes
     const { data: { subscription } } = auth.onAuthStateChange((event, session) => {
-      setUser(session?.user ?? null)
+      if (session && typeof session === 'object' && 'user' in session) {
+        setUser(session.user as User | null)
+      } else {
+        setUser(null)
+      }
       setLoading(false)
     })
 
