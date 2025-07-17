@@ -201,7 +201,7 @@ export function InteractiveMap({ className = "" }: InteractiveMapProps) {
       // Add country labels only (no boundary lines)
       countries.forEach(country => {
         // Calculate center point for country labels
-        const bounds = L.default.latLngBounds(country.coordinates as any)
+        const bounds = L.default.latLngBounds(country.coordinates as [number, number][])
         const center = bounds.getCenter()
         
         L.default.marker(center, {
