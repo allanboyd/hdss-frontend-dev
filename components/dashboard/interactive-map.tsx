@@ -1,17 +1,6 @@
 "use client"
 
 import { useEffect, useRef } from 'react'
-import L from 'leaflet'
-import 'leaflet/dist/leaflet.css'
-
-// Fix for default markers in Leaflet
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-delete (L.Icon.Default.prototype as any)._getIconUrl
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-})
 
 interface ResearchSite {
   name: string
@@ -52,75 +41,89 @@ export function InteractiveMap({ className = "" }: InteractiveMapProps) {
   useEffect(() => {
     if (!mapRef.current || mapInstanceRef.current) return
 
-    // Initialize map centered on East Africa
-    const map = L.map(mapRef.current, {
-      center: [0, 30],
-      zoom: 5,
-      zoomControl: false,
-      attributionControl: false,
-    })
+    const initializeMap = async () => {
+      // Dynamically import Leaflet only on client side
+      const L = await import('leaflet')
+      // CSS will be loaded by the component
 
-    // Add custom styled map tiles with orange/amber accent colors for water areas
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '© OpenStreetMap contributors'
-    }).addTo(map)
+      // Fix for default markers in Leaflet
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      delete (L.default.Icon.Default.prototype as any)._getIconUrl
+      L.default.Icon.Default.mergeOptions({
+        iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+        iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+      })
 
-    // Custom icon for major cities
-    const majorIcon = L.divIcon({
-      className: 'custom-marker major',
-      html: '<div class="w-4 h-4 bg-orange-500 rounded-full border-2 border-white shadow-lg"></div>',
-      iconSize: [16, 16],
-      iconAnchor: [8, 8]
-    })
+      // Initialize map centered on East Africa
+      const map = L.default.map(mapRef.current!, {
+        center: [0, 30],
+        zoom: 5,
+        zoomControl: false,
+        attributionControl: false,
+      })
 
-    // Custom icon for secondary cities
-    const secondaryIcon = L.divIcon({
-      className: 'custom-marker secondary',
-      html: '<div class="w-3 h-3 bg-amber-500 rounded-full border-2 border-white shadow-md"></div>',
-      iconSize: [12, 12],
-      iconAnchor: [6, 6]
-    })
+      // Add custom styled map tiles with orange/amber accent colors for water areas
+      L.default.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap contributors'
+      }).addTo(map)
 
-    // Custom icon for households
-    const householdIcon = L.divIcon({
-      className: 'custom-marker household',
-      html: '<div class="w-2 h-2 bg-orange-300 rounded-full border border-white shadow-sm"></div>',
-      iconSize: [8, 8],
-      iconAnchor: [4, 4]
-    })
+      // Custom icon for major cities
+      const majorIcon = L.default.divIcon({
+        className: 'custom-marker major',
+        html: '<div class="w-4 h-4 bg-orange-500 rounded-full border-2 border-white shadow-lg"></div>',
+        iconSize: [16, 16],
+        iconAnchor: [8, 8]
+      })
 
-    // Add markers for each research site
-    researchSites.forEach(site => {
-      let icon
-      switch (site.type) {
-        case 'major':
-          icon = majorIcon
-          break
-        case 'secondary':
-          icon = secondaryIcon
-          break
-        case 'household':
-          icon = householdIcon
-          break
-      }
+      // Custom icon for secondary cities
+      const secondaryIcon = L.default.divIcon({
+        className: 'custom-marker secondary',
+        html: '<div class="w-3 h-3 bg-amber-500 rounded-full border-2 border-white shadow-md"></div>',
+        iconSize: [12, 12],
+        iconAnchor: [6, 6]
+      })
 
-      const marker = L.marker(site.coordinates, { icon }).addTo(map)
-      
-      // Create popup content
-      const popupContent = `
-        <div class="p-2">
-          <h3 class="font-semibold text-gray-900 mb-1">${site.name}</h3>
-          <div class="text-sm text-gray-600 space-y-1">
-            <div><span class="font-medium">Households:</span> ${site.households.toLocaleString()}</div>
-            <div><span class="font-medium">Population:</span> ${site.population.toLocaleString()}</div>
-            <div><span class="font-medium">Type:</span> ${site.type.charAt(0).toUpperCase() + site.type.slice(1)}</div>
+      // Custom icon for households
+      const householdIcon = L.default.divIcon({
+        className: 'custom-marker household',
+        html: '<div class="w-2 h-2 bg-orange-300 rounded-full border border-white shadow-sm"></div>',
+        iconSize: [8, 8],
+        iconAnchor: [4, 4]
+      })
+
+      // Add markers for each research site
+      researchSites.forEach(site => {
+        let icon
+        switch (site.type) {
+          case 'major':
+            icon = majorIcon
+            break
+          case 'secondary':
+            icon = secondaryIcon
+            break
+          case 'household':
+            icon = householdIcon
+            break
+        }
+
+        const marker = L.default.marker(site.coordinates, { icon }).addTo(map)
+        
+        // Create popup content
+        const popupContent = `
+          <div class="p-2">
+            <h3 class="font-semibold text-gray-900 mb-1">${site.name}</h3>
+            <div class="text-sm text-gray-600 space-y-1">
+              <div><span class="font-medium">Households:</span> ${site.households.toLocaleString()}</div>
+              <div><span class="font-medium">Population:</span> ${site.population.toLocaleString()}</div>
+              <div><span class="font-medium">Type:</span> ${site.type.charAt(0).toUpperCase() + site.type.slice(1)}</div>
+            </div>
           </div>
-        </div>
-      `
-      
-      marker.bindPopup(popupContent)
-    })
+        `
+        
+        marker.bindPopup(popupContent)
+      })
 
     // Add country boundaries (simplified)
     const countries = [
