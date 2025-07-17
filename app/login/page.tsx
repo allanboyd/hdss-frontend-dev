@@ -155,7 +155,9 @@ export default function LoginPage() {
         : await signIn(email, password)
 
       if (error) {
-        setError(error.message)
+        setError(typeof error === 'object' && error !== null && 'message' in error 
+          ? String(error.message) 
+          : 'An error occurred during authentication')
       } else {
         router.push('/dashboard')
       }
