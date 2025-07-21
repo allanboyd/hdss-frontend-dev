@@ -69,38 +69,39 @@ export function NotificationsPanel() {
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-gray-900">
             <Bell className="w-5 h-5 text-orange-600" />
-            Notifications
+            <span className="hidden sm:inline">Notifications</span>
+            <span className="sm:hidden">Alerts</span>
           </CardTitle>
           <Badge variant="warning" className="ml-2">
             {notifications.length} New
           </Badge>
         </div>
-        <div className="flex gap-2 text-xs mt-3">
-          <span className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full font-medium">All</span>
-          <span className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full">Access</span>
-          <span className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full">Research</span>
-          <span className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full">Data</span>
+        <div className="flex gap-1 sm:gap-2 text-xs mt-3 overflow-x-auto">
+          <span className="px-2 sm:px-3 py-1 bg-orange-100 text-orange-700 rounded-full font-medium whitespace-nowrap">All</span>
+          <span className="px-2 sm:px-3 py-1 bg-gray-100 text-gray-600 rounded-full whitespace-nowrap">Access</span>
+          <span className="px-2 sm:px-3 py-1 bg-gray-100 text-gray-600 rounded-full whitespace-nowrap">Research</span>
+          <span className="px-2 sm:px-3 py-1 bg-gray-100 text-gray-600 rounded-full whitespace-nowrap">Data</span>
         </div>
       </CardHeader>
       <CardContent className="p-0">
         <div className="space-y-1">
           {notifications.map((notification) => (
-            <div key={notification.id} className="flex items-start gap-3 p-4 hover:bg-gray-50 transition-colors duration-150 border-b border-gray-100 last:border-b-0">
-              <div className={`p-2 rounded-full ${notification.color.replace('text-', 'bg-').replace('-500', '-100')}`}>
-                <notification.icon className={`w-4 h-4 ${notification.color}`} />
+            <div key={notification.id} className="flex items-start gap-3 p-3 sm:p-4 hover:bg-gray-50 transition-colors duration-150 border-b border-gray-100 last:border-b-0">
+              <div className={`p-1.5 sm:p-2 rounded-full ${notification.color.replace('text-', 'bg-').replace('-500', '-100')}`}>
+                <notification.icon className={`w-3 h-3 sm:w-4 sm:h-4 ${notification.color}`} />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 leading-tight">{notification.title}</p>
+                <p className="text-xs sm:text-sm font-medium text-gray-900 leading-tight">{notification.title}</p>
                 <p className="text-xs text-gray-500 mt-1">{notification.time}</p>
               </div>
-              <Button variant="ghost" size="sm" className="text-orange-600 hover:text-orange-700 hover:bg-orange-50">
-                <Eye className="w-4 h-4" />
+              <Button variant="ghost" size="sm" className="text-orange-600 hover:text-orange-700 hover:bg-orange-50 p-1 sm:p-2">
+                <Eye className="w-3 h-3 sm:w-4 sm:h-4" />
               </Button>
             </div>
           ))}
         </div>
-        <div className="p-4 border-t border-gray-100">
-          <Button variant="outline" className="w-full text-orange-600 border-orange-200 hover:bg-orange-50">
+        <div className="p-3 sm:p-4 border-t border-gray-100">
+          <Button variant="outline" className="w-full text-orange-600 border-orange-200 hover:bg-orange-50 text-xs sm:text-sm">
             View All Notifications
           </Button>
         </div>

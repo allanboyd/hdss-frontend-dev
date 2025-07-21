@@ -170,81 +170,58 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left Side - Hero Section (50%) */}
-      <div className="
-      w-1/2 bg-gradient-to-br 
-      from-amber-100 via-amber-50 
-      to-orange-100 p-8 
-      flex flex-col 
-      justify-center items-center 
-      relative overflow-hidden
-      bg-[url('/svg/bg_login.svg')] bg-cover bg-center bg-no-repeat m-10 rounded-2xl
-      "  
+    <div className="min-h-screen flex flex-col lg:flex-row bg-white">
+      {/* Left Side - Hero Section */}
+      <div
+        className="w-full lg:w-1/2 flex flex-col justify-center items-center relative overflow-hidden bg-gradient-to-br from-amber-100 via-amber-50 to-orange-100 p-6 sm:p-8 lg:p-10 xl:p-12 bg-[url('/svg/bg_login.svg')] bg-cover bg-center bg-no-repeat m-0 lg:m-10 rounded-none lg:rounded-2xl"
       >
         {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-20 w-32 h-32 bg-amber-300 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-20 w-40 h-40 bg-orange-300 rounded-full blur-3xl"></div>
+        <div className="absolute inset-0 opacity-10 pointer-events-none">
+          <div className="absolute top-10 left-10 w-20 h-20 sm:w-32 sm:h-32 bg-amber-300 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 right-10 w-24 h-24 sm:w-40 sm:h-40 bg-orange-300 rounded-full blur-3xl"></div>
         </div>
-
-                  {/* Logo */}
-          <div className="absolute top-4 left-4 sm:top-8 sm:left-8 z-10">
-            <Image
-              src="/images/aphrc_mainlogo.png"
-              alt="APHRC Logo" 
-              width={180}
-              height={50}
-              className="object-contain w-32 h-8 sm:w-40 sm:h-12 md:w-44 md:h-12 lg:w-48 lg:h-14"
-              priority
-            />
-          </div>
-
-
-        <div className="
-        bg-[url('/svg/bg_login_content.svg')] 
-        bg-cover 
-        bg-center bg-no-repeat
-        p-10
-        overflow-auto
-        rounded-2xl
-        " >
-
-        {/* Dashboard Preview */}
-        <div className="mb-12 max-w-md relative z-10">
-          <div className="bg-white rounded-2xl shadow-2xl p-4 transform rotate-0 hover:rotate-3 transition-transform duration-300">
-            <Image
-              src="/svg/dashboard.svg"
-              alt="Dashboard Preview"
-              width={400}
-              height={300}
-              className="rounded-lg"
-            />
-          </div>
+        {/* Logo */}
+        <div className="absolute top-4 left-4 sm:top-8 sm:left-8 z-10">
+          <Image
+            src="/images/aphrc_mainlogo.png"
+            alt="APHRC Logo"
+            width={180}
+            height={50}
+            className="object-contain w-28 h-8 sm:w-40 sm:h-12 md:w-44 md:h-12 lg:w-48 lg:h-14"
+            priority
+          />
         </div>
-
-        {/* Content */}
-        <div className="text-center max-w-md relative z-10">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6 leading-tight">
-            For Field agents, researchers, & policymakers
-          </h2>
-          <p className="text-gray-600 mb-8 text-lg leading-relaxed">
-            Collect, access, and analyze population and health data across African research sites with ease and clarity.
-          </p>
-
-          {/* Pagination dots */}
-          <div className="flex justify-center gap-3">
-            <div className="w-3 h-3 bg-amber-600 rounded-full"></div>
-            <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
-            <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
+        {/* Dashboard Preview & Content */}
+        <div className="w-full flex flex-col items-center justify-center z-10">
+          <div className="mb-8 sm:mb-12 max-w-xs sm:max-w-md w-full">
+            <div className="bg-white rounded-2xl shadow-2xl p-2 sm:p-4 transform rotate-0 hover:rotate-3 transition-transform duration-300">
+              <Image
+                src="/svg/dashboard.svg"
+                alt="Dashboard Preview"
+                width={400}
+                height={300}
+                className="rounded-lg w-full h-auto"
+              />
+            </div>
           </div>
-        </div>
-
+          <div className="text-center max-w-xs sm:max-w-md w-full">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-6 leading-tight">
+              For Field agents, researchers, & policymakers
+            </h2>
+            <p className="text-gray-600 mb-6 sm:mb-8 text-base sm:text-lg leading-relaxed">
+              Collect, access, and analyze population and health data across African research sites with ease and clarity.
+            </p>
+            <div className="flex justify-center gap-2 sm:gap-3 mb-2">
+              <div className="w-2 h-2 sm:w-3 sm:h-3 bg-amber-600 rounded-full"></div>
+              <div className="w-2 h-2 sm:w-3 sm:h-3 bg-gray-300 rounded-full"></div>
+              <div className="w-2 h-2 sm:w-3 sm:h-3 bg-gray-300 rounded-full"></div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Right Side - Login Form or Account Request (50%) */}
-      <div className="w-1/2 bg-white flex items-center justify-center p-8">
+      {/* Right Side - Login/Signup/Request Form */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-8 bg-white">
         <div className="w-full max-w-md">
           {!showAccountRequest && !isRequestSuccess && !showForgotPassword && !forgotPasswordSuccess && (
             <>
@@ -500,7 +477,7 @@ export default function LoginPage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="w-full">
                     <Label htmlFor="role" className="text-gray-700 font-semibold text-sm uppercase tracking-wide">
                       Requested Role *

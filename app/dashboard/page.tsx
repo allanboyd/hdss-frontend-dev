@@ -16,13 +16,13 @@ export default function DashboardPage() {
       <div className="flex h-screen bg-gray-50">
         <Sidebar />
 
-        <div className="flex-1 flex flex-col overflow-hidden">
+        <div className="flex-1 flex flex-col overflow-hidden lg:ml-0">
           {/* Top Bar */}
           <TopBar />
 
-          <div className="flex-1 p-4 overflow-y-auto">
+          <div className="flex-1 p-2 sm:p-4 overflow-y-auto">
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 mb-4">
               <StatsCard
                 title="Total Households Mapped"
                 value="5,034"
@@ -54,14 +54,14 @@ export default function DashboardPage() {
             </div>
 
             {/* Main Content Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-2 sm:gap-4">
               {/* Left Column - Household Mapping and Analytics */}
               <div className="lg:col-span-3 flex flex-col">
                 <Card className="mb-4 shadow-sm border border-gray-200">
                   <CardHeader className="pb-3">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                       <CardTitle className="text-base font-semibold text-gray-900">Household Mapping</CardTitle>
-                      <div className="flex gap-2">
+                      <div className="flex flex-wrap gap-2">
                         <Select defaultValue="country">
                           <SelectTrigger className="w-24 h-6 text-xs">
                             <SelectValue placeholder="Country" />
@@ -98,21 +98,21 @@ export default function DashboardPage() {
                     </div>
                   </CardHeader>
                   <CardContent className="p-0">
-                    <div className="h-80 rounded-b-lg overflow-hidden">
+                    <div className="h-60 sm:h-80 rounded-b-lg overflow-hidden">
                       <InteractiveMap />
                     </div>
                   </CardContent>
                 </Card>
 
                 {/* Analytics Charts and Dataset Overview */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4">
                   {/* Migration Chart */}
                   <Card className="shadow-sm border border-gray-200">
                     <CardHeader className="pb-3">
                       <CardTitle className="text-base font-semibold text-gray-900">Migration</CardTitle>
                     </CardHeader>
                     <CardContent className="p-0">
-                      <div className="h-36 bg-gray-50 rounded-b-lg flex items-center justify-center relative">
+                      <div className="h-32 sm:h-36 bg-gray-50 rounded-b-lg flex items-center justify-center relative">
                         {/* Chart Container */}
                         <div className="w-full h-full p-3">
                           {/* Y-axis */}
@@ -192,62 +192,78 @@ export default function DashboardPage() {
                       <CardTitle className="text-base font-semibold text-gray-900">Population Analytics</CardTitle>
                     </CardHeader>
                     <CardContent className="p-0">
-                      <div className="h-36 bg-gray-50 rounded-b-lg flex items-center justify-center relative">
+                      <div className="h-32 sm:h-36 bg-gray-50 rounded-b-lg flex items-center justify-center relative">
                         {/* Donut Chart */}
-                        <div className="relative w-24 h-24">
+                        <div className="relative w-20 h-20 sm:w-24 sm:h-24">
                           {/* Donut Chart SVG */}
                           <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
                             {/* Background Circle */}
                             <circle
                               cx="50"
                               cy="50"
-                              r="35"
+                              r="40"
                               fill="none"
                               stroke="#e5e7eb"
-                              strokeWidth="6"
+                              strokeWidth="8"
                             />
-                            {/* Red Section (45%) */}
+                            {/* Data Segments */}
                             <circle
                               cx="50"
                               cy="50"
-                              r="35"
-                              fill="none"
-                              stroke="#ef4444"
-                              strokeWidth="6"
-                              strokeDasharray="220"
-                              strokeDashoffset="121"
-                              strokeLinecap="round"
-                            />
-                            {/* Yellow Section (55%) */}
-                            <circle
-                              cx="50"
-                              cy="50"
-                              r="35"
+                              r="40"
                               fill="none"
                               stroke="#f59e0b"
-                              strokeWidth="6"
-                              strokeDasharray="220"
-                              strokeDashoffset="220"
+                              strokeWidth="8"
+                              strokeDasharray="125.6"
+                              strokeDashoffset="62.8"
+                              strokeLinecap="round"
+                            />
+                            <circle
+                              cx="50"
+                              cy="50"
+                              r="40"
+                              fill="none"
+                              stroke="#3b82f6"
+                              strokeWidth="8"
+                              strokeDasharray="125.6"
+                              strokeDashoffset="94.2"
+                              strokeLinecap="round"
+                            />
+                            <circle
+                              cx="50"
+                              cy="50"
+                              r="40"
+                              fill="none"
+                              stroke="#10b981"
+                              strokeWidth="8"
+                              strokeDasharray="125.6"
+                              strokeDashoffset="125.6"
                               strokeLinecap="round"
                             />
                           </svg>
                           
                           {/* Center Text */}
-                          <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                            <div className="text-sm font-bold text-gray-900">Total</div>
-                            <div className="text-xs text-gray-600">1,200,345</div>
+                          <div className="absolute inset-0 flex flex-col items-center justify-center text-xs">
+                            <span className="font-semibold text-gray-900">30K</span>
+                            <span className="text-gray-500">Total</span>
                           </div>
                         </div>
                         
                         {/* Legend */}
-                        <div className="absolute bottom-2 left-2 bg-white bg-opacity-90 rounded p-1 text-xs">
-                          <div className="flex items-center gap-1 mb-1">
-                            <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                            <span>Male (55%)</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                            <span>Female (45%)</span>
+                        <div className="absolute bottom-2 left-2 right-2 bg-white bg-opacity-90 rounded p-2 text-xs">
+                          <div className="grid grid-cols-3 gap-1">
+                            <div className="flex items-center gap-1">
+                              <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                              <span>Male</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                              <span>Female</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                              <span>Other</span>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -259,29 +275,24 @@ export default function DashboardPage() {
                     <CardHeader className="pb-3">
                       <CardTitle className="text-base font-semibold text-gray-900">Dataset Overview</CardTitle>
                     </CardHeader>
-                    <CardContent className="p-3">
-                      <div className="space-y-3">
-                        <div>
-                          <p className="text-xs text-gray-600">Total Datasets</p>
-                          <p className="text-lg font-bold text-gray-900">2,194</p>
-                        </div>
-                        
-                        <div>
-                          <p className="text-xs text-gray-600">Last uploaded on 18th June 2025</p>
-                        </div>
-                        
-                        <div>
-                          <p className="text-xs text-gray-600">
-                            Most accessed: <span className="font-medium">Migration Form A</span>
-                          </p>
-                        </div>
-                        
-                        <div>
-                          <p className="text-xs font-medium text-gray-900 mb-1">Popular Datasets</p>
-                          <div className="flex gap-1 flex-wrap">
-                            <span className="px-1 py-0.5 bg-blue-100 text-blue-700 text-xs rounded">Demographic</span>
-                            <span className="px-1 py-0.5 bg-green-100 text-green-700 text-xs rounded">Health</span>
-                            <span className="px-1 py-0.5 bg-red-100 text-red-700 text-xs rounded">Migration</span>
+                    <CardContent className="p-0">
+                      <div className="h-32 sm:h-36 bg-gray-50 rounded-b-lg p-4">
+                        <div className="space-y-3">
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-gray-600">Total Datasets</span>
+                            <span className="text-sm font-semibold text-gray-900">167</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-gray-600">Active Projects</span>
+                            <span className="text-sm font-semibold text-gray-900">24</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-gray-600">Last Updated</span>
+                            <span className="text-sm font-semibold text-gray-900">2h ago</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-gray-600">Data Quality</span>
+                            <span className="text-sm font-semibold text-green-600">98%</span>
                           </div>
                         </div>
                       </div>
@@ -290,9 +301,8 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              {/* Right Column - Notifications */}
-              <div className="flex flex-col">
-                <div className="flex-1"></div>
+              {/* Right Column - Notifications Panel */}
+              <div className="lg:col-span-1">
                 <NotificationsPanel />
               </div>
             </div>

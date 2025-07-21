@@ -17,6 +17,12 @@ export const metadata: Metadata = {
     shortcut: '/images/aphrc32x32.png',
     apple: '/images/aphrc180x180.png',
   },
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+  },
 }
 
 export default function RootLayout({

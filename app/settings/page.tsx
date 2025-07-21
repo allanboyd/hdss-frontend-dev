@@ -85,12 +85,12 @@ export default function SettingsPage() {
       <div className="flex h-screen bg-gray-50">
         <Sidebar />
 
-        <div className="flex-1 flex flex-col overflow-hidden">
+        <div className="flex-1 flex flex-col overflow-hidden lg:ml-0">
           <TopBar />
 
           <div className="flex-1 flex overflow-hidden">
             {/* Settings Sidebar */}
-            <div className="w-80 bg-white border-r border-gray-200 overflow-y-auto">
+            <div className="hidden lg:block w-80 bg-white border-r border-gray-200 overflow-y-auto">
               <div className="p-6">
                 <h2 className="text-lg font-semibold text-gray-900 mb-6">Settings</h2>
                 
@@ -152,11 +152,34 @@ export default function SettingsPage() {
               </div>
             </div>
 
+            {/* Mobile Tab Navigation */}
+            <div className="lg:hidden w-full bg-white border-b border-gray-200">
+              <div className="flex overflow-x-auto">
+                {tabs.map((tab) => {
+                  const Icon = tab.icon
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`flex-shrink-0 flex items-center px-4 py-3 text-sm font-medium border-b-2 transition-colors duration-200 ${
+                        activeTab === tab.id
+                          ? "border-orange-500 text-orange-600"
+                          : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                      }`}
+                    >
+                      <Icon className="w-4 h-4 mr-2" />
+                      {tab.name}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
             {/* Main Content */}
-            <div className="flex-1 overflow-y-auto p-6">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6">
               {/* Breadcrumb */}
               <div className="mb-6">
-                <h1 className="text-2xl font-bold text-gray-900">Settings &gt; General</h1>
+                <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Settings &gt; General</h1>
               </div>
 
               {/* Settings Content */}
@@ -218,7 +241,7 @@ export default function SettingsPage() {
                     </div>
 
                     <div className="space-y-4">
-                      <div className="flex items-center justify-between">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
                           <h4 className="text-sm font-medium text-gray-900">Mobile push notifications</h4>
                           <p className="text-sm text-gray-500">Receive push notification whenever your organisation requires your attentions</p>
@@ -230,7 +253,7 @@ export default function SettingsPage() {
                           }
                         />
                       </div>
-                      <div className="flex items-center justify-between">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
                           <h4 className="text-sm font-medium text-gray-900">Desktop Notification</h4>
                           <p className="text-sm text-gray-500">Receive desktop notification whenever your organisation requires your attentions</p>
@@ -242,7 +265,7 @@ export default function SettingsPage() {
                           }
                         />
                       </div>
-                      <div className="flex items-center justify-between">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
                           <h4 className="text-sm font-medium text-gray-900">Email Notification</h4>
                           <p className="text-sm text-gray-500">Receive email whenever your organisation requires your attentions</p>
@@ -267,7 +290,7 @@ export default function SettingsPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-6">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                       <div>
                         <h4 className="text-sm font-medium text-gray-900">Appearance</h4>
                         <p className="text-sm text-gray-500">Customize how you theams looks on your device.</p>
@@ -284,7 +307,7 @@ export default function SettingsPage() {
                       </Select>
                     </div>
 
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                       <div>
                         <h4 className="text-sm font-medium text-gray-900">Two-factor authentication</h4>
                         <p className="text-sm text-gray-500">Keep your account secure by enabling 2FA via SMS or using a temporary one-time passcode (TOTP).</p>
@@ -292,7 +315,7 @@ export default function SettingsPage() {
                       <Switch defaultChecked />
                     </div>
 
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                       <div>
                         <h4 className="text-sm font-medium text-gray-900">Language</h4>
                       </div>
