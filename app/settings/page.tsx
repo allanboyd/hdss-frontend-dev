@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"   
@@ -18,7 +17,15 @@ import {
   Users,
   Lock,
   FileText,
-  Bell
+  Bell,
+  Shield,
+  Globe,
+  Palette,
+  Smartphone,
+  Monitor,
+  Mail,
+  Save,
+  Key
 } from "lucide-react"
 
 export default function SettingsPage() {
@@ -29,7 +36,10 @@ export default function SettingsPage() {
     teamAdded: true,
     mobilePush: true,
     desktopNotification: true,
-    emailNotification: false
+    emailNotification: false,
+    researchUpdates: true,
+    dataAlerts: true,
+    securityAlerts: true
   })
 
   const tabs = [
@@ -37,43 +47,50 @@ export default function SettingsPage() {
       id: "general", 
       name: "General", 
       icon: Home,
-      category: "ACCOUNT"
+      category: "ACCOUNT",
+      description: "Basic account settings and preferences"
     },
     { 
       id: "profile", 
       name: "My Profile", 
       icon: User,
-      category: "ACCOUNT"
+      category: "ACCOUNT",
+      description: "Personal information and profile settings"
     },
     { 
       id: "preferences", 
       name: "Preferences", 
       icon: SettingsIcon,
-      category: "ACCOUNT"
+      category: "ACCOUNT",
+      description: "Customize your experience"
     },
     { 
       id: "applications", 
       name: "Applications", 
       icon: FileText,
-      category: "ACCOUNT"
+      category: "ACCOUNT",
+      description: "Manage connected applications"
     },
     { 
       id: "workspace-settings", 
-      name: "Settings", 
+      name: "Workspace", 
       icon: SettingsIcon,
-      category: "WORKSPACE"
+      category: "WORKSPACE",
+      description: "Workspace configuration"
     },
     { 
       id: "members", 
       name: "Members", 
       icon: Users,
-      category: "WORKSPACE"
+      category: "WORKSPACE",
+      description: "Manage team members"
     },
     { 
       id: "security", 
       name: "Security", 
       icon: Lock,
-      category: "WORKSPACE"
+      category: "WORKSPACE",
+      description: "Security and privacy settings"
     }
   ]
 
@@ -92,30 +109,36 @@ export default function SettingsPage() {
             {/* Settings Sidebar */}
             <div className="hidden lg:block w-80 bg-white border-r border-gray-200 overflow-y-auto">
               <div className="p-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-6">Settings</h2>
+                <div className="mb-8">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Settings</h2>
+                  <p className="text-gray-600">Manage your account and workspace preferences</p>
+                </div>
                 
                 {/* Account Section */}
                 <div className="mb-8">
-                  <h3 className="px-3 mb-2 text-xs font-bold text-gray-700 uppercase tracking-wider">
+                  <h3 className="px-3 mb-3 text-xs font-bold text-gray-700 uppercase tracking-wider">
                     ACCOUNT
                   </h3>
-                  <div className="space-y-0">
+                  <div className="space-y-1">
                     {accountTabs.map((tab) => {
                       const Icon = tab.icon
                       return (
                         <button
                           key={tab.id}
                           onClick={() => setActiveTab(tab.id)}
-                          className={`w-full flex items-center px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 ${
+                          className={`w-full flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
                             activeTab === tab.id
-                              ? "bg-gradient-to-r from-gray-50 to-orange-50 text-gray-900"
-                              : "text-gray-600 hover:bg-gradient-to-r hover:from-gray-50 hover:to-orange-50 hover:text-gray-900"
+                              ? "bg-gradient-to-r from-orange-500 to-amber-600 text-white shadow-md"
+                              : "text-gray-600 hover:bg-gradient-to-r hover:from-orange-50 hover:to-amber-50 hover:text-gray-900"
                           }`}
                         >
                           <Icon className={`mr-3 flex-shrink-0 h-5 w-5 transition-colors duration-200 ${
-                            activeTab === tab.id ? "text-orange-600" : "text-gray-400 group-hover:text-orange-500"
+                            activeTab === tab.id ? "text-white" : "text-gray-400 group-hover:text-orange-500"
                           }`} />
-                          {tab.name}
+                          <div className="text-left">
+                            <div className="font-medium">{tab.name}</div>
+                            <div className="text-xs opacity-75">{tab.description}</div>
+                          </div>
                         </button>
                       )
                     })}
@@ -124,26 +147,29 @@ export default function SettingsPage() {
 
                 {/* Workspace Section */}
                 <div>
-                  <h3 className="px-3 mb-2 text-xs font-bold text-gray-700 uppercase tracking-wider">
+                  <h3 className="px-3 mb-3 text-xs font-bold text-gray-700 uppercase tracking-wider">
                     WORKSPACE
                   </h3>
-                  <div className="space-y-0">
+                  <div className="space-y-1">
                     {workspaceTabs.map((tab) => {
                       const Icon = tab.icon
                       return (
                         <button
                           key={tab.id}
                           onClick={() => setActiveTab(tab.id)}
-                          className={`w-full flex items-center px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 ${
+                          className={`w-full flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
                             activeTab === tab.id
-                              ? "bg-gradient-to-r from-gray-50 to-orange-50 text-gray-900"
-                              : "text-gray-600 hover:bg-gradient-to-r hover:from-gray-50 hover:to-orange-50 hover:text-gray-900"
+                              ? "bg-gradient-to-r from-orange-500 to-amber-600 text-white shadow-md"
+                              : "text-gray-600 hover:bg-gradient-to-r hover:from-orange-50 hover:to-amber-50 hover:text-gray-900"
                           }`}
                         >
                           <Icon className={`mr-3 flex-shrink-0 h-5 w-5 transition-colors duration-200 ${
-                            activeTab === tab.id ? "text-orange-600" : "text-gray-400 group-hover:text-orange-500"
+                            activeTab === tab.id ? "text-white" : "text-gray-400 group-hover:text-orange-500"
                           }`} />
-                          {tab.name}
+                          <div className="text-left">
+                            <div className="font-medium">{tab.name}</div>
+                            <div className="text-xs opacity-75">{tab.description}</div>
+                          </div>
                         </button>
                       )
                     })}
@@ -176,162 +202,251 @@ export default function SettingsPage() {
             </div>
 
             {/* Main Content */}
-            <div className="flex-1 overflow-y-auto p-4 sm:p-6">
-              {/* Breadcrumb */}
-              <div className="mb-6">
-                <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Settings &gt; General</h1>
-              </div>
+            <div className="flex-1 overflow-y-auto p-6">
+              <div className="max-w-4xl mx-auto">
+                {/* Header */}
+                <div className="mb-8">
+                  <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
+                  <p className="text-gray-600 mt-2">Manage your account preferences and workspace settings</p>
+                </div>
 
-              {/* Settings Content */}
-              <div className="max-w-4xl space-y-6">
-                {/* My Notifications */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Bell className="w-5 h-5 text-orange-600" />
-                      My Notifications
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-900 mb-3">Notify me when...</h4>
-                      <div className="space-y-3">
-                        <div className="flex items-center space-x-3">
-                          <Checkbox 
-                            id="daily-update"
-                            checked={notifications.dailyUpdate}
+                {/* Settings Content */}
+                <div className="space-y-6">
+                  {/* Notifications Settings */}
+                  <Card className="border-0 shadow-md">
+                    <CardHeader className="pb-4">
+                      <CardTitle className="flex items-center gap-3 text-xl">
+                        <div className="p-2 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-lg">
+                          <Bell className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <div className="font-semibold text-gray-900">Notifications</div>
+                          <div className="text-sm text-gray-500">Manage your notification preferences</div>
+                        </div>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                      <div>
+                        <h4 className="text-lg font-medium text-gray-900 mb-4">Research & Data Alerts</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                            <Checkbox 
+                              id="research-updates"
+                              checked={notifications.researchUpdates}
+                              onChange={(e) => 
+                                setNotifications(prev => ({ ...prev, researchUpdates: e.target.checked }))
+                              }
+                            />
+                            <Label htmlFor="research-updates" className="text-sm text-gray-700">
+                              Research study updates
+                            </Label>
+                          </div>
+                          <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                            <Checkbox 
+                              id="data-alerts"
+                              checked={notifications.dataAlerts}
+                              onChange={(e) => 
+                                setNotifications(prev => ({ ...prev, dataAlerts: e.target.checked }))
+                              }
+                            />
+                            <Label htmlFor="data-alerts" className="text-sm text-gray-700">
+                              Data processing alerts
+                            </Label>
+                          </div>
+                          <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                            <Checkbox 
+                              id="security-alerts"
+                              checked={notifications.securityAlerts}
+                              onChange={(e) => 
+                                setNotifications(prev => ({ ...prev, securityAlerts: e.target.checked }))
+                              }
+                            />
+                            <Label htmlFor="security-alerts" className="text-sm text-gray-700">
+                              Security notifications
+                            </Label>
+                          </div>
+                          <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                            <Checkbox 
+                              id="daily-update"
+                              checked={notifications.dailyUpdate}
+                              onChange={(e) => 
+                                setNotifications(prev => ({ ...prev, dailyUpdate: e.target.checked }))
+                              }
+                            />
+                            <Label htmlFor="daily-update" className="text-sm text-gray-700">
+                              Daily summary reports
+                            </Label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 bg-gray-50 rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <div className="p-2 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg">
+                              <Smartphone className="w-5 h-5 text-white" />
+                            </div>
+                            <div>
+                              <h4 className="text-sm font-medium text-gray-900">Mobile push notifications</h4>
+                              <p className="text-sm text-gray-500">Receive alerts on your mobile device</p>
+                            </div>
+                          </div>
+                          <Switch 
+                            checked={notifications.mobilePush}
                             onChange={(e) => 
-                              setNotifications(prev => ({ ...prev, dailyUpdate: e.target.checked }))
+                              setNotifications(prev => ({ ...prev, mobilePush: e.target.checked }))
                             }
                           />
-                          <Label htmlFor="daily-update" className="text-sm text-gray-700">
-                            Daily productivity update
-                          </Label>
                         </div>
-                        <div className="flex items-center space-x-3">
-                          <Checkbox 
-                            id="new-event"
-                            checked={notifications.newEvent}
+                        
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 bg-gray-50 rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <div className="p-2 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-lg">
+                              <Monitor className="w-5 h-5 text-white" />
+                            </div>
+                            <div>
+                              <h4 className="text-sm font-medium text-gray-900">Desktop notifications</h4>
+                              <p className="text-sm text-gray-500">Show notifications on your desktop</p>
+                            </div>
+                          </div>
+                          <Switch 
+                            checked={notifications.desktopNotification}
                             onChange={(e) => 
-                              setNotifications(prev => ({ ...prev, newEvent: e.target.checked }))
+                              setNotifications(prev => ({ ...prev, desktopNotification: e.target.checked }))
                             }
                           />
-                          <Label htmlFor="new-event" className="text-sm text-gray-700">
-                            New event created
-                          </Label>
                         </div>
-                        <div className="flex items-center space-x-3">
-                          <Checkbox 
-                            id="team-added"
-                            checked={notifications.teamAdded}
+                        
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 bg-gray-50 rounded-lg">
+                          <div className="flex items-center gap-3">
+                            <div className="p-2 bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg">
+                              <Mail className="w-5 h-5 text-white" />
+                            </div>
+                            <div>
+                              <h4 className="text-sm font-medium text-gray-900">Email notifications</h4>
+                              <p className="text-sm text-gray-500">Receive notifications via email</p>
+                            </div>
+                          </div>
+                          <Switch 
+                            checked={notifications.emailNotification}
                             onChange={(e) => 
-                              setNotifications(prev => ({ ...prev, teamAdded: e.target.checked }))
+                              setNotifications(prev => ({ ...prev, emailNotification: e.target.checked }))
                             }
                           />
-                          <Label htmlFor="team-added" className="text-sm text-gray-700">
-                            When added on new team
-                          </Label>
                         </div>
                       </div>
-                      <div className="mt-3 text-right">
-                        <Button variant="link" className="text-blue-600 p-0 h-auto">
-                          About notifications?
-                        </Button>
-                      </div>
-                    </div>
+                    </CardContent>
+                  </Card>
 
-                    <div className="space-y-4">
-                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  {/* Appearance & Security Settings */}
+                  <Card className="border-0 shadow-md">
+                    <CardHeader className="pb-4">
+                      <CardTitle className="flex items-center gap-3 text-xl">
+                        <div className="p-2 bg-gradient-to-r from-orange-500 to-amber-600 rounded-lg">
+                          <SettingsIcon className="w-6 h-6 text-white" />
+                        </div>
                         <div>
-                          <h4 className="text-sm font-medium text-gray-900">Mobile push notifications</h4>
-                          <p className="text-sm text-gray-500">Receive push notification whenever your organisation requires your attentions</p>
+                          <div className="font-semibold text-gray-900">Preferences</div>
+                          <div className="text-sm text-gray-500">Customize your experience and security</div>
                         </div>
-                        <Switch 
-                          checked={notifications.mobilePush}
-                          onChange={(e) => 
-                            setNotifications(prev => ({ ...prev, mobilePush: e.target.checked }))
-                          }
-                        />
-                      </div>
-                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                        <div>
-                          <h4 className="text-sm font-medium text-gray-900">Desktop Notification</h4>
-                          <p className="text-sm text-gray-500">Receive desktop notification whenever your organisation requires your attentions</p>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-4">
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 bg-gray-50 rounded-lg">
+                            <div className="flex items-center gap-3">
+                              <div className="p-2 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg">
+                                <Palette className="w-5 h-5 text-white" />
+                              </div>
+                              <div>
+                                <h4 className="text-sm font-medium text-gray-900">Theme</h4>
+                                <p className="text-sm text-gray-500">Choose your preferred theme</p>
+                              </div>
+                            </div>
+                            <Select defaultValue="light">
+                              <SelectTrigger className="w-32">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="light">Light</SelectItem>
+                                <SelectItem value="dark">Dark</SelectItem>
+                                <SelectItem value="auto">Auto</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 bg-gray-50 rounded-lg">
+                            <div className="flex items-center gap-3">
+                              <div className="p-2 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg">
+                                <Globe className="w-5 h-5 text-white" />
+                              </div>
+                              <div>
+                                <h4 className="text-sm font-medium text-gray-900">Language</h4>
+                                <p className="text-sm text-gray-500">Select your preferred language</p>
+                              </div>
+                            </div>
+                            <Select defaultValue="english">
+                              <SelectTrigger className="w-32">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="english">English</SelectItem>
+                                <SelectItem value="french">French</SelectItem>
+                                <SelectItem value="spanish">Spanish</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
                         </div>
-                        <Switch 
-                          checked={notifications.desktopNotification}
-                          onChange={(e) => 
-                            setNotifications(prev => ({ ...prev, desktopNotification: e.target.checked }))
-                          }
-                        />
-                      </div>
-                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                        <div>
-                          <h4 className="text-sm font-medium text-gray-900">Email Notification</h4>
-                          <p className="text-sm text-gray-500">Receive email whenever your organisation requires your attentions</p>
+
+                        <div className="space-y-4">
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 bg-gray-50 rounded-lg">
+                            <div className="flex items-center gap-3">
+                              <div className="p-2 bg-gradient-to-r from-red-500 to-pink-600 rounded-lg">
+                                <Shield className="w-5 h-5 text-white" />
+                              </div>
+                              <div>
+                                <h4 className="text-sm font-medium text-gray-900">Two-factor authentication</h4>
+                                <p className="text-sm text-gray-500">Enhanced account security</p>
+                              </div>
+                            </div>
+                            <Switch defaultChecked />
+                          </div>
+
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 bg-gray-50 rounded-lg">
+                            <div className="flex items-center gap-3">
+                              <div className="p-2 bg-gradient-to-r from-yellow-500 to-orange-600 rounded-lg">
+                                <Key className="w-5 h-5 text-white" />
+                              </div>
+                              <div>
+                                <h4 className="text-sm font-medium text-gray-900">Session timeout</h4>
+                                <p className="text-sm text-gray-500">Auto-logout after inactivity</p>
+                              </div>
+                            </div>
+                            <Select defaultValue="30">
+                              <SelectTrigger className="w-32">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="15">15 min</SelectItem>
+                                <SelectItem value="30">30 min</SelectItem>
+                                <SelectItem value="60">1 hour</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
                         </div>
-                        <Switch 
-                          checked={notifications.emailNotification}
-                          onChange={(e) => 
-                            setNotifications(prev => ({ ...prev, emailNotification: e.target.checked }))
-                          }
-                        />
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
 
-                {/* My Settings */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <SettingsIcon className="w-5 h-5 text-orange-600" />
-                      My Settings
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                      <div>
-                        <h4 className="text-sm font-medium text-gray-900">Appearance</h4>
-                        <p className="text-sm text-gray-500">Customize how you theams looks on your device.</p>
-                      </div>
-                      <Select defaultValue="light">
-                        <SelectTrigger className="w-32">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="light">Light</SelectItem>
-                          <SelectItem value="dark">Dark</SelectItem>
-                          <SelectItem value="auto">Auto</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                      <div>
-                        <h4 className="text-sm font-medium text-gray-900">Two-factor authentication</h4>
-                        <p className="text-sm text-gray-500">Keep your account secure by enabling 2FA via SMS or using a temporary one-time passcode (TOTP).</p>
-                      </div>
-                      <Switch defaultChecked />
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                      <div>
-                        <h4 className="text-sm font-medium text-gray-900">Language</h4>
-                      </div>
-                      <Select defaultValue="english">
-                        <SelectTrigger className="w-32">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="english">English</SelectItem>
-                          <SelectItem value="french">French</SelectItem>
-                          <SelectItem value="spanish">Spanish</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </CardContent>
-                </Card>
+                  {/* Save Button */}
+                  <div className="flex justify-end">
+                    <Button className="bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white">
+                      <Save className="w-4 h-4 mr-2" />
+                      Save Changes
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

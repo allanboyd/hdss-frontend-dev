@@ -38,7 +38,7 @@ const navigationSections = [
   {
     title: "APP",
     items: [
-      { name: "Household Mapping", href: "/mapping", icon: Map, badge: "Interactive" },
+      { name: "Household Mapping", href: "/household", icon: Map, badge: "Interactive" },
       { name: "Research & Analytics", href: "/analytics", icon: BarChart3, badge: "New" },
       { name: "Data Hub", href: "/datasets", icon: Database, badge: "2.1K+" },
       { name: "A-Search Assistant", href: "/assistant", icon: MessageCircle },
