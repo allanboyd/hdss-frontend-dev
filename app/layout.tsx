@@ -31,8 +31,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={`${nunito.className} ${nunito.variable}`}>
+    <html lang="en" suppressHydrationWarning>
+      <body 
+        className={`${nunito.className} ${nunito.variable}`}
+        suppressHydrationWarning
+      >
         <AuthProvider>
           {children}
         </AuthProvider>

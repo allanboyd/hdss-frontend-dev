@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 
 import { useRouter } from "next/navigation"
@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useAuth } from "@/lib/auth-context"
 import { supabase } from "@/lib/supabase"
+import { authServices } from "@/lib/auth-services"
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -40,10 +41,14 @@ export default function LoginPage() {
     reason: "",
   })
   
+  const [publicRoles, setPublicRoles] = useState<any[]>([])
+  const [sites, setSites] = useState<any[]>([])
+  const [isLoadingData, setIsLoadingData] = useState(false)
+  
   const { signIn, signUp } = useAuth()
   const router = useRouter()
 
-  // Mock data for the form
+  // Countries data
   const countries = [
     { code: "+254", name: "Kenya" },
     { code: "+256", name: "Uganda" },
@@ -58,22 +63,31 @@ export default function LoginPage() {
     { code: "+49", name: "Germany" },
   ]
 
-  const roles = [
-    { id: 1, name: "Field Agent", description: "Collect data in the field" },
-    { id: 2, name: "Researcher", description: "Conduct research and analysis" },
-    { id: 3, name: "Data Analyst", description: "Analyze and interpret data" },
-    { id: 4, name: "Policy Maker", description: "Use data for policy decisions" },
-    { id: 5, name: "Site Manager", description: "Manage research sites" },
-    { id: 6, name: "Administrator", description: "System administration" },
-  ]
+  // Load public roles and sites for INSPIRE network form
+  useEffect(() => {
+    const loadData = async () => {
+      if (showAccountRequest) {
+        setIsLoadingData(true)
+        try {
+          console.log('Loading public roles and sites...')
+          const [rolesData, sitesData] = await Promise.all([
+            authServices.getSystemRoles(),
+            authServices.getAllSites()
+          ])
+          console.log('Loaded roles:', rolesData)
+          console.log('Loaded sites:', sitesData)
+          setPublicRoles(rolesData)
+          setSites(sitesData)
+        } catch (error) {
+          console.error('Error loading data:', error)
+        } finally {
+          setIsLoadingData(false)
+        }
+      }
+    }
 
-  const sites = [
-    { id: 1, name: "Korogacho", country: "Kenya", description: "Nairobi slum area" },
-    { id: 2, name: "Kibera", country: "Kenya", description: "Largest slum in Nairobi" },
-    { id: 3, name: "Mathare", country: "Kenya", description: "Nairobi informal settlement" },
-    { id: 4, name: "Kampala Urban", country: "Uganda", description: "Urban research site" },
-    { id: 5, name: "Dar es Salaam", country: "Tanzania", description: "Coastal research site" },
-  ]
+    loadData()
+  }, [showAccountRequest])
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }))
@@ -151,19 +165,35 @@ export default function LoginPage() {
     setError("")
 
     try {
-      const { error } = isSignUp 
-        ? await signUp(email, password)
-        : await signIn(email, password)
+      if (isSignUp) {
+        // For external users, create account with first public role
+        const fullName = (e.target as HTMLFormElement).fullName?.value || ""
+        const phoneNumber = (e.target as HTMLFormElement).phoneNumber?.value || ""
+        const countryCode = (e.target as HTMLFormElement).countryCode?.value || "+254"
+        
+        const result = await authServices.createUserWithSystemRole({
+          email,
+          password,
+          full_name: fullName,
+          phone_number: `${countryCode}${phoneNumber}`
+        })
 
-      if (error) {
-        setError(typeof error === 'object' && error !== null && 'message' in error 
-          ? String(error.message) 
-          : 'An error occurred during authentication')
+        if (result) {
+          router.push('/dashboard')
+        }
       } else {
-        router.push('/dashboard')
+        // Regular sign in
+        const { error } = await signIn(email, password)
+        if (error) {
+          setError(typeof error === 'object' && error !== null && 'message' in error 
+            ? String(error.message) 
+            : 'An error occurred during authentication')
+        } else {
+          router.push('/dashboard')
+        }
       }
-    } catch {
-      setError('An unexpected error occurred')
+    } catch (error: any) {
+      setError(error?.message || 'An unexpected error occurred')
     } finally {
       setIsLoading(false)
     }
@@ -485,19 +515,27 @@ export default function LoginPage() {
                     <Select 
                       value={formData.requestedRoleId} 
                       onValueChange={(value) => handleInputChange("requestedRoleId", value)}
+                      disabled={isLoadingData}
                     >
                       <SelectTrigger className="mt-2 h-12 border-gray-300 focus:border-orange-500 focus:ring-orange-500 w-full">
-                        <SelectValue placeholder="Select your role" />
+                        <SelectValue placeholder={isLoadingData ? "Loading roles..." : "Select your role"} />
                       </SelectTrigger>
                       <SelectContent>
-                        {roles.map((role) => (
-                          <SelectItem key={role.id} value={role.id.toString()}>
-                            <div className="py-1">
-                              <div className="font-semibold text-gray-900">{role.name}</div>
-                              <div className="text-sm text-gray-600">{role.description}</div>
-                            </div>
-                          </SelectItem>
-                        ))}
+                        {isLoadingData ? (
+                          <div className="p-4 text-center text-gray-500">
+                            <Loader2 className="w-4 h-4 animate-spin mx-auto mb-2" />
+                            Loading roles...
+                          </div>
+                        ) : (
+                          publicRoles.map((role) => (
+                            <SelectItem key={role.role_id} value={role.role_id.toString()}>
+                              <div className="py-1">
+                                <div className="font-semibold text-gray-900">{role.role_name}</div>
+                                <div className="text-sm text-gray-600">{role.description}</div>
+                              </div>
+                            </SelectItem>
+                          ))
+                        )}
                       </SelectContent>
                     </Select>
                   </div>
@@ -509,19 +547,27 @@ export default function LoginPage() {
                     <Select 
                       value={formData.requestedSiteId} 
                       onValueChange={(value) => handleInputChange("requestedSiteId", value)}
+                      disabled={isLoadingData}
                     >
                       <SelectTrigger className="mt-2 h-12 border-gray-300 focus:border-orange-500 focus:ring-orange-500 w-full">
-                        <SelectValue placeholder="Select a site" />
+                        <SelectValue placeholder={isLoadingData ? "Loading sites..." : "Select a site"} />
                       </SelectTrigger>
                       <SelectContent>
-                        {sites.map((site) => (
-                          <SelectItem key={site.id} value={site.id.toString()}>
-                            <div className="py-1">
-                              <div className="font-semibold text-gray-900">{site.name}</div>
-                              <div className="text-sm text-gray-600">{site.country} - {site.description}</div>
-                            </div>
-                          </SelectItem>
-                        ))}
+                        {isLoadingData ? (
+                          <div className="p-4 text-center text-gray-500">
+                            <Loader2 className="w-4 h-4 animate-spin mx-auto mb-2" />
+                            Loading sites...
+                          </div>
+                        ) : (
+                          sites.map((site) => (
+                            <SelectItem key={site.site_id} value={site.site_id.toString()}>
+                              <div className="py-1">
+                                <div className="font-semibold text-gray-900">{site.name}</div>
+                                <div className="text-sm text-gray-600">{site.country?.name || 'Unknown'} - {site.description}</div>
+                              </div>
+                            </SelectItem>
+                          ))
+                        )}
                       </SelectContent>
                     </Select>
                   </div>

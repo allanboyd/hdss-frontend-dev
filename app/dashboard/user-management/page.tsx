@@ -3,12 +3,10 @@
 import { useState, useEffect } from "react"
 import { 
   Search, 
-  Globe, 
-  MapPin, 
-  Home, 
-  Building, 
-  Users,
-  TrendingUp,
+  Shield, 
+  Users, 
+  UserPlus, 
+  Clock,
   Activity
 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -17,27 +15,34 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ProtectedRoute } from "@/components/auth/protected-route"
 import { TopBar } from "@/components/dashboard/top-bar"
 import { Sidebar } from "@/components/dashboard/sidebar"
-import { CountriesTab } from "@/components/site-management/countries-tab"
-import { SitesTab } from "@/components/site-management/sites-tab"
-import { VillagesTab } from "@/components/site-management/villages-tab"
-import { StructuresTab } from "@/components/site-management/structures-tab"
-import { DwellingUnitsTab } from "@/components/site-management/dwelling-units-tab"
-import { geographicCountsService } from "@/lib/site-management"
-import { GeographicCounts } from "@/types/site-management"
+import { RolesTab } from "@/components/user-management/roles-tab"
+import { SystemUsersTab } from "@/components/user-management/system-users-tab"
+import { AllAccountRequestsTab } from "@/components/user-management/all-account-requests-tab"
+import { PendingRequestsTab } from "@/components/user-management/pending-requests-tab"
+import { userManagementCountsService } from "@/lib/user-management"
+import { UserManagementCounts } from "@/types/user-management"
 
-export default function SiteManagementPage() {
-  const [activeTab, setActiveTab] = useState("countries")
+export default function UserManagementPage() {
+  const [activeTab, setActiveTab] = useState("roles")
   const [searchQuery, setSearchQuery] = useState("")
-  const [counts, setCounts] = useState<GeographicCounts | null>(null)
+  const [counts, setCounts] = useState<UserManagementCounts | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const loadCounts = async () => {
       try {
-        const countsData = await geographicCountsService.getCounts()
+        const countsData = await userManagementCountsService.getCounts()
         setCounts(countsData)
       } catch (error) {
         console.error('Error loading counts:', error)
+        // Set default counts on error
+        setCounts({
+          roles_count: 0,
+          users_count: 0,
+          pending_requests_count: 0,
+          total_requests_count: 0,
+          last_updated: new Date().toISOString()
+        })
       } finally {
         setLoading(false)
       }
@@ -48,39 +53,32 @@ export default function SiteManagementPage() {
 
   const stats = [
     {
-      title: "Countries",
-      value: counts?.countries_count || 0,
-      icon: Globe,
-      description: "Total countries",
+      title: "Roles",
+      value: counts?.roles_count || 0,
+      icon: Shield,
+      description: "System roles",
       color: "text-blue-600"
     },
     {
-      title: "Sites",
-      value: counts?.sites_count || 0,
-      icon: MapPin,
-      description: "Research sites",
+      title: "System Users",
+      value: counts?.users_count || 0,
+      icon: Users,
+      description: "Active users",
       color: "text-green-600"
     },
     {
-      title: "Villages",
-      value: counts?.villages_count || 0,
-      icon: Home,
-      description: "Villages surveyed",
+      title: "Pending Requests",
+      value: counts?.pending_requests_count || 0,
+      icon: Clock,
+      description: "Awaiting approval",
       color: "text-orange-600"
     },
     {
-      title: "Structures",
-      value: counts?.structures_count || 0,
-      icon: Building,
-      description: "Buildings recorded",
+      title: "Total Requests",
+      value: counts?.total_requests_count || 0,
+      icon: UserPlus,
+      description: "All time requests",
       color: "text-purple-600"
-    },
-    {
-      title: "Dwelling Units",
-      value: counts?.dwelling_units_count || 0,
-      icon: Users,
-      description: "Housing units",
-      color: "text-red-600"
     }
   ]
 
@@ -95,8 +93,8 @@ export default function SiteManagementPage() {
               {/* Header */}
               <div className="flex items-center justify-between mb-8">
                 <div>
-                  <h1 className="text-3xl font-bold text-gray-900">Site Management</h1>
-                  <p className="text-gray-600 mt-2">Manage geographic data and research sites</p>
+                  <h1 className="text-3xl font-bold text-gray-900">User Management</h1>
+                  <p className="text-gray-600 mt-2">Manage users, roles, and account requests</p>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="relative">
@@ -107,12 +105,12 @@ export default function SiteManagementPage() {
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className="pl-10 w-64"
                     />
+                  </div>
                 </div>
               </div>
-            </div>
 
               {/* Stats Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 {stats.map((stat) => {
                   const Icon = stat.icon
                   return (
@@ -138,55 +136,48 @@ export default function SiteManagementPage() {
                     </Card>
                   )
                 })}
-            </div>
+              </div>
 
               {/* Last Updated Info */}
               {counts?.last_updated && (
                 <div className="flex items-center gap-2 text-sm text-gray-500 mb-6">
                   <Activity className="w-4 h-4" />
                   <span>Last updated: {new Date(counts.last_updated).toLocaleString()}</span>
-                  </div>
-                )}
+                </div>
+              )}
 
               {/* Tabs */}
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="grid w-full grid-cols-5">
-                  <TabsTrigger value="countries" className="flex items-center gap-2">
-                    <Globe className="w-4 h-4" />
-                    Countries
+                <TabsList className="grid w-full grid-cols-4">
+                  <TabsTrigger value="roles" className="flex items-center gap-2">
+                    <Shield className="w-4 h-4" />
+                    Roles
                   </TabsTrigger>
-                  <TabsTrigger value="sites" className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4" />
-                    Sites
-                  </TabsTrigger>
-                  <TabsTrigger value="villages" className="flex items-center gap-2">
-                    <Home className="w-4 h-4" />
-                    Villages
-                  </TabsTrigger>
-                  <TabsTrigger value="structures" className="flex items-center gap-2">
-                    <Building className="w-4 h-4" />
-                    Structures
-                  </TabsTrigger>
-                  <TabsTrigger value="dwelling-units" className="flex items-center gap-2">
+                  <TabsTrigger value="system-users" className="flex items-center gap-2">
                     <Users className="w-4 h-4" />
-                    Dwelling Units
+                    System Users
+                  </TabsTrigger>
+                  <TabsTrigger value="all-requests" className="flex items-center gap-2">
+                    <UserPlus className="w-4 h-4" />
+                    All Account Requests
+                  </TabsTrigger>
+                  <TabsTrigger value="pending-requests" className="flex items-center gap-2">
+                    <Clock className="w-4 h-4" />
+                    Pending Requests
                   </TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="countries" className="mt-6">
-                  <CountriesTab searchQuery={searchQuery} />
+                <TabsContent value="roles" className="mt-6">
+                  <RolesTab searchQuery={searchQuery} />
                 </TabsContent>
-                <TabsContent value="sites" className="mt-6">
-                  <SitesTab searchQuery={searchQuery} />
+                <TabsContent value="system-users" className="mt-6">
+                  <SystemUsersTab searchQuery={searchQuery} />
                 </TabsContent>
-                <TabsContent value="villages" className="mt-6">
-                  <VillagesTab searchQuery={searchQuery} />
+                <TabsContent value="all-requests" className="mt-6">
+                  <AllAccountRequestsTab searchQuery={searchQuery} />
                 </TabsContent>
-                <TabsContent value="structures" className="mt-6">
-                  <StructuresTab searchQuery={searchQuery} />
-                </TabsContent>
-                <TabsContent value="dwelling-units" className="mt-6">
-                  <DwellingUnitsTab searchQuery={searchQuery} />
+                <TabsContent value="pending-requests" className="mt-6">
+                  <PendingRequestsTab searchQuery={searchQuery} />
                 </TabsContent>
               </Tabs>
             </div>

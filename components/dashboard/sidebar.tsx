@@ -20,6 +20,7 @@ import {
   MessageCircle,
   Menu,
   X,
+  Shield,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useAuth } from "@/lib/auth-context"
@@ -48,6 +49,7 @@ const navigationSections = [
     title: "SETTINGS",
     items: [
       { name: "Site Management", href: "/dashboard/site-management", icon: Building2, badge: "12 Sites" },
+      { name: "User Management", href: "/dashboard/user-management", icon: Shield, badge: "Admin" },
       { name: "Settings", href: "/settings", icon: Settings },
       { name: "Alerts & Notifications", href: "/alerts", icon: AlertTriangle, badge: "3 New" },
       { name: "Help & Support", href: "/help", icon: HelpCircle },
