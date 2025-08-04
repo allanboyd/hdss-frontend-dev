@@ -70,8 +70,8 @@ export function SystemUsersTab({ searchQuery }: SystemUsersTabProps) {
       setUsers(usersData)
       setRoles(rolesData)
       setSites(sitesData)
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to load data'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to load data'
       toast.error(`Error loading data: ${errorMessage}`)
       console.error("Error loading data:", error)
     } finally {
@@ -101,7 +101,7 @@ export function SystemUsersTab({ searchQuery }: SystemUsersTabProps) {
         try {
           await siteUserService.create(siteUserData)
           toast.success("User created successfully and assigned to site")
-        } catch (siteUserError: any) {
+        } catch (siteUserError: unknown) {
           // If site_user creation fails, still show success for user creation but warn about site assignment
           console.error("Error creating site user record:", siteUserError)
           toast.success("User created successfully, but site assignment failed")
@@ -123,8 +123,8 @@ export function SystemUsersTab({ searchQuery }: SystemUsersTabProps) {
       })
       setPasswordCopied(false)
       loadData()
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to create user'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create user'
       toast.error(`Error creating user: ${errorMessage}`)
       console.error("Error creating user:", error)
     }
@@ -155,8 +155,8 @@ export function SystemUsersTab({ searchQuery }: SystemUsersTabProps) {
       })
       setPasswordCopied(false)
       loadData()
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to update user'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to update user'
       toast.error(`Error updating user: ${errorMessage}`)
       console.error("Error updating user:", error)
     }
@@ -171,8 +171,8 @@ export function SystemUsersTab({ searchQuery }: SystemUsersTabProps) {
       setIsDeleteDialogOpen(false)
       setSelectedUser(null)
       loadData()
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to delete user'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to delete user'
       
       // Check for specific error types
       if (errorMessage.includes('foreign key') || errorMessage.includes('constraint')) {
@@ -234,7 +234,7 @@ export function SystemUsersTab({ searchQuery }: SystemUsersTabProps) {
         setPasswordCopied(true)
         toast.success("Password copied to clipboard")
         setTimeout(() => setPasswordCopied(false), 2000)
-      } catch (error) {
+      } catch {
         toast.error("Failed to copy password")
       }
     }
@@ -616,7 +616,7 @@ export function SystemUsersTab({ searchQuery }: SystemUsersTabProps) {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete the user "{selectedUser?.full_name}". This action cannot be undone.
+              This will permanently delete the user &quot;{selectedUser?.full_name}&quot;. This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

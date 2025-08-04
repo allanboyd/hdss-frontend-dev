@@ -90,8 +90,8 @@ export function VillagesTab({ searchQuery }: VillagesTabProps) {
       ])
       setVillages(villagesData)
       setSites(sitesData)
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to load data'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to load data'
       toast.error(`Error loading data: ${errorMessage}`)
       console.error("Error loading data:", error)
     } finally {
@@ -111,8 +111,8 @@ export function VillagesTab({ searchQuery }: VillagesTabProps) {
       setIsAddDialogOpen(false)
       setFormData({ site_id: 0, name: '' })
       loadData()
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to create village'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create village'
       toast.error(`Error creating village: ${errorMessage}`)
       console.error("Error creating village:", error)
     }
@@ -133,8 +133,8 @@ export function VillagesTab({ searchQuery }: VillagesTabProps) {
       setSelectedVillage(null)
       setFormData({ site_id: 0, name: '' })
       loadData()
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to update village'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to update village'
       toast.error(`Error updating village: ${errorMessage}`)
       console.error("Error updating village:", error)
     }
@@ -149,8 +149,8 @@ export function VillagesTab({ searchQuery }: VillagesTabProps) {
       setIsDeleteDialogOpen(false)
       setSelectedVillage(null)
       loadData()
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to delete village'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to delete village'
       
       // Check for specific error types
       if (errorMessage.includes('foreign key') || errorMessage.includes('constraint')) {
@@ -389,7 +389,7 @@ export function VillagesTab({ searchQuery }: VillagesTabProps) {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete the village "{selectedVillage?.name}". This action cannot be undone.
+              This will permanently delete the village &quot;{selectedVillage?.name}&quot;. This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

@@ -50,8 +50,8 @@ export function RolesTab({ searchQuery }: RolesTabProps) {
       setLoading(true)
       const data = await roleService.getAll()
       setRoles(data)
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to load roles'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to load roles'
       toast.error(`Error loading roles: ${errorMessage}`)
       console.error("Error loading roles:", error)
     } finally {
@@ -71,8 +71,8 @@ export function RolesTab({ searchQuery }: RolesTabProps) {
       setIsAddDialogOpen(false)
       setFormData({ role_name: '', description: '', is_default: false, is_system: false })
       loadRoles()
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to create role'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create role'
       toast.error(`Error creating role: ${errorMessage}`)
       console.error("Error creating role:", error)
     }
@@ -93,8 +93,8 @@ export function RolesTab({ searchQuery }: RolesTabProps) {
       setSelectedRole(null)
       setFormData({ role_name: '', description: '', is_default: false, is_system: false })
       loadRoles()
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to update role'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to update role'
       toast.error(`Error updating role: ${errorMessage}`)
       console.error("Error updating role:", error)
     }
@@ -109,8 +109,8 @@ export function RolesTab({ searchQuery }: RolesTabProps) {
       setIsDeleteDialogOpen(false)
       setSelectedRole(null)
       loadRoles()
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to delete role'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to delete role'
       
       // Check for specific error types
       if (errorMessage.includes('foreign key') || errorMessage.includes('constraint')) {
@@ -413,7 +413,7 @@ export function RolesTab({ searchQuery }: RolesTabProps) {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete the role "{selectedRole?.role_name}". This action cannot be undone.
+              This will permanently delete the role &quot;{selectedRole?.role_name}&quot;. This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

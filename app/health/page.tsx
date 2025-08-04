@@ -1,13 +1,11 @@
 "use client"
 
-import { useState } from "react"
 import { 
   Filter, 
   Download,
   FileText,
   AlertCircle
 } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ProtectedRoute } from "@/components/auth/protected-route"
 import { TopBar } from "@/components/dashboard/top-bar"

@@ -6,9 +6,6 @@ import {
   Edit, 
   Trash2, 
   Globe,
-  Search,
-  Filter,
-  Download,
   MoreHorizontal
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -82,8 +79,8 @@ export function CountriesTab({ searchQuery }: CountriesTabProps) {
       setLoading(true)
       const data = await countryService.getAll()
       setCountries(data)
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to load countries'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to load countries'
       toast.error(`Error loading countries: ${errorMessage}`)
       console.error("Error loading countries:", error)
     } finally {
@@ -103,8 +100,8 @@ export function CountriesTab({ searchQuery }: CountriesTabProps) {
       setIsAddDialogOpen(false)
       setFormData({ name: '', code: '', status: true })
       loadCountries()
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to create country'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create country'
       toast.error(`Error creating country: ${errorMessage}`)
       console.error("Error creating country:", error)
     }
@@ -125,8 +122,8 @@ export function CountriesTab({ searchQuery }: CountriesTabProps) {
       setSelectedCountry(null)
       setFormData({ name: '', code: '', status: true })
       loadCountries()
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to update country'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to update country'
       toast.error(`Error updating country: ${errorMessage}`)
       console.error("Error updating country:", error)
     }
@@ -141,8 +138,8 @@ export function CountriesTab({ searchQuery }: CountriesTabProps) {
       setIsDeleteDialogOpen(false)
       setSelectedCountry(null)
       loadCountries()
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to delete country'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to delete country'
       
       // Check for specific error types
       if (errorMessage.includes('foreign key') || errorMessage.includes('constraint')) {
@@ -378,7 +375,7 @@ export function CountriesTab({ searchQuery }: CountriesTabProps) {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete the country "{selectedCountry?.name}". This action cannot be undone.
+              This will permanently delete the country &quot;{selectedCountry?.name}&quot;. This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

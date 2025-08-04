@@ -9,10 +9,4 @@ export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
     autoRefreshToken: false,
     persistSession: false
   }
-})
-
-// Helper function to handle Supabase admin errors
-const handleSupabaseAdminError = async (error: any) => {
-  console.error('Supabase admin error:', error)
-  return { data: null, error }
-} 
+}) 

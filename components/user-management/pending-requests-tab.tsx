@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 import { 
   Check, 
   X, 
-  MoreHorizontal,
   UserPlus,
   Mail,
   Phone,
@@ -18,16 +17,12 @@ import {
 import { toast } from "sonner"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { userAccountRequestService, roleService, userProfileService, siteUserService } from "@/lib/user-management"
-import { siteService as siteManagementService } from "@/lib/site-management"
-import { UserAccountRequest, UpdateUserAccountRequestForm, Role } from "@/types/user-management"
-import { Site } from "@/types/site-management"
+import { userAccountRequestService } from "@/lib/user-management"
+import { UserAccountRequest, UpdateUserAccountRequestForm } from "@/types/user-management"
 import { supabaseAdmin } from "@/lib/supabase-admin"
 import { emailService } from "@/lib/email-service"
 
@@ -37,13 +32,10 @@ interface PendingRequestsTabProps {
 
 export function PendingRequestsTab({ searchQuery }: PendingRequestsTabProps) {
   const [requests, setRequests] = useState<UserAccountRequest[]>([])
-  const [roles, setRoles] = useState<Role[]>([])
-  const [sites, setSites] = useState<Site[]>([])
   const [loading, setLoading] = useState(true)
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false)
   const [isApprovalDialogOpen, setIsApprovalDialogOpen] = useState(false)
   const [selectedRequest, setSelectedRequest] = useState<UserAccountRequest | null>(null)
-  const [reviewAction, setReviewAction] = useState<'approve' | 'reject' | null>(null)
   
   // Approval modal states
   const [generatedPassword, setGeneratedPassword] = useState('')
@@ -59,16 +51,10 @@ export function PendingRequestsTab({ searchQuery }: PendingRequestsTabProps) {
   const loadData = async () => {
     try {
       setLoading(true)
-      const [requestsData, rolesData, sitesData] = await Promise.all([
-        userAccountRequestService.getByStatus('pending'),
-        roleService.getAll(),
-        siteManagementService.getAll()
-      ])
+      const requestsData = await userAccountRequestService.getByStatus('pending')
       setRequests(requestsData)
-      setRoles(rolesData)
-      setSites(sitesData)
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to load data'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to load data'
       toast.error(`Error loading data: ${errorMessage}`)
       console.error("Error loading data:", error)
     } finally {
@@ -93,7 +79,7 @@ export function PendingRequestsTab({ searchQuery }: PendingRequestsTabProps) {
       setPasswordCopied(true)
       toast.success("Password copied to clipboard")
       setTimeout(() => setPasswordCopied(false), 2000)
-    } catch (error) {
+    } catch {
       toast.error("Failed to copy password")
     }
   }
@@ -228,9 +214,10 @@ export function PendingRequestsTab({ searchQuery }: PendingRequestsTabProps) {
       setEmailSent(false)
       loadData()
 
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create user account'
       console.error("Error creating user account:", error)
-      toast.error(`Failed to create user account: ${error.message}`)
+      toast.error(`Failed to create user account: ${errorMessage}`)
     } finally {
       setIsProcessing(false)
     }
@@ -262,10 +249,9 @@ export function PendingRequestsTab({ searchQuery }: PendingRequestsTabProps) {
       
       setIsReviewDialogOpen(false)
       setSelectedRequest(null)
-      setReviewAction(null)
       loadData()
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to reject request'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to reject request'
       toast.error(`Error rejecting request: ${errorMessage}`)
       console.error("Error rejecting request:", error)
     }
@@ -273,7 +259,6 @@ export function PendingRequestsTab({ searchQuery }: PendingRequestsTabProps) {
 
   const openReviewDialog = (request: UserAccountRequest, action: 'approve' | 'reject') => {
     setSelectedRequest(request)
-    setReviewAction(action)
     
     if (action === 'approve') {
       setIsApprovalDialogOpen(true)

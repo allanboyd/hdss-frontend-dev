@@ -17,11 +17,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { userAccountRequestService, roleService } from "@/lib/user-management"
-import { siteService as siteManagementService } from "@/lib/site-management"
-import { UserAccountRequest, UpdateUserAccountRequestForm, Role, Site } from "@/types/user-management"
+import { userAccountRequestService } from "@/lib/user-management"
+import { UserAccountRequest, UpdateUserAccountRequestForm } from "@/types/user-management"
 
 interface AllAccountRequestsTabProps {
   searchQuery: string
@@ -29,8 +28,6 @@ interface AllAccountRequestsTabProps {
 
 export function AllAccountRequestsTab({ searchQuery }: AllAccountRequestsTabProps) {
   const [requests, setRequests] = useState<UserAccountRequest[]>([])
-  const [roles, setRoles] = useState<Role[]>([])
-  const [sites, setSites] = useState<Site[]>([])
   const [loading, setLoading] = useState(true)
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false)
   const [selectedRequest, setSelectedRequest] = useState<UserAccountRequest | null>(null)
@@ -43,16 +40,10 @@ export function AllAccountRequestsTab({ searchQuery }: AllAccountRequestsTabProp
   const loadData = async () => {
     try {
       setLoading(true)
-      const [requestsData, rolesData, sitesData] = await Promise.all([
-        userAccountRequestService.getAll(),
-        roleService.getAll(),
-        siteManagementService.getAll()
-      ])
+      const requestsData = await userAccountRequestService.getAll()
       setRequests(requestsData)
-      setRoles(rolesData)
-      setSites(sitesData)
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to load data'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to load data'
       toast.error(`Error loading data: ${errorMessage}`)
       console.error("Error loading data:", error)
     } finally {
@@ -78,8 +69,8 @@ export function AllAccountRequestsTab({ searchQuery }: AllAccountRequestsTabProp
       setSelectedRequest(null)
       setReviewAction(null)
       loadData()
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to review request'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to review request'
       toast.error(`Error reviewing request: ${errorMessage}`)
       console.error("Error reviewing request:", error)
     }

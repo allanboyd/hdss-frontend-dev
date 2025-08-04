@@ -99,8 +99,8 @@ export function SitesTab({ searchQuery }: SitesTabProps) {
       ])
       setSites(sitesData)
       setCountries(countriesData)
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to load data'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to load data'
       toast.error(`Error loading data: ${errorMessage}`)
       console.error("Error loading data:", error)
     } finally {
@@ -130,8 +130,8 @@ export function SitesTab({ searchQuery }: SitesTabProps) {
         end_date: ''
       })
       loadData()
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to create site'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create site'
       toast.error(`Error creating site: ${errorMessage}`)
       console.error("Error creating site:", error)
     }
@@ -162,8 +162,8 @@ export function SitesTab({ searchQuery }: SitesTabProps) {
         end_date: ''
       })
       loadData()
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to update site'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to update site'
       toast.error(`Error updating site: ${errorMessage}`)
       console.error("Error updating site:", error)
     }
@@ -178,8 +178,8 @@ export function SitesTab({ searchQuery }: SitesTabProps) {
       setIsDeleteDialogOpen(false)
       setSelectedSite(null)
       loadData()
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to delete site'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to delete site'
       
       // Check for specific error types
       if (errorMessage.includes('foreign key') || errorMessage.includes('constraint')) {
@@ -586,7 +586,7 @@ export function SitesTab({ searchQuery }: SitesTabProps) {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete the site "{selectedSite?.name}". This action cannot be undone.
+              This will permanently delete the site &quot;{selectedSite?.name}&quot;. This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

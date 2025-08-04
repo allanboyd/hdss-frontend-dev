@@ -1,12 +1,14 @@
 import { supabase } from './supabase'
 
-export const handleAuthError = async (error: any) => {
+export const handleAuthError = async (error: unknown) => {
   console.error('Auth error:', error)
   
   // Handle refresh token errors
-  if (error?.message?.includes('Invalid Refresh Token') || 
-      error?.message?.includes('Refresh Token Not Found') ||
-      error?.message?.includes('JWT expired')) {
+  if (error && typeof error === 'object' && 'message' in error && 
+      typeof error.message === 'string' && 
+      (error.message.includes('Invalid Refresh Token') || 
+       error.message.includes('Refresh Token Not Found') ||
+       error.message.includes('JWT expired'))) {
     
     console.log('Handling refresh token error, signing out user')
     
@@ -40,9 +42,11 @@ export const clearAuthData = () => {
   }
 }
 
-export const isAuthError = (error: any) => {
-  return error?.message?.includes('Invalid Refresh Token') ||
-         error?.message?.includes('Refresh Token Not Found') ||
-         error?.message?.includes('JWT expired') ||
-         error?.message?.includes('Invalid JWT')
+export const isAuthError = (error: unknown) => {
+  return error && typeof error === 'object' && 'message' in error && 
+         typeof error.message === 'string' &&
+         (error.message.includes('Invalid Refresh Token') ||
+          error.message.includes('Refresh Token Not Found') ||
+          error.message.includes('JWT expired') ||
+          error.message.includes('Invalid JWT'))
 } 

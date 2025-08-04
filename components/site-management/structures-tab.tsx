@@ -13,7 +13,6 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import {
   Table,
   TableBody,
@@ -94,8 +93,8 @@ export function StructuresTab({ searchQuery }: StructuresTabProps) {
       ])
       setStructures(structuresData)
       setVillages(villagesData)
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to load data'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to load data'
       toast.error(`Error loading data: ${errorMessage}`)
       console.error("Error loading data:", error)
     } finally {
@@ -120,8 +119,8 @@ export function StructuresTab({ searchQuery }: StructuresTabProps) {
         address_description: ''
       })
       loadData()
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to create structure'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create structure'
       toast.error(`Error creating structure: ${errorMessage}`)
       console.error("Error creating structure:", error)
     }
@@ -147,8 +146,8 @@ export function StructuresTab({ searchQuery }: StructuresTabProps) {
         address_description: ''
       })
       loadData()
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to update structure'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to update structure'
       toast.error(`Error updating structure: ${errorMessage}`)
       console.error("Error updating structure:", error)
     }
@@ -163,8 +162,8 @@ export function StructuresTab({ searchQuery }: StructuresTabProps) {
       setIsDeleteDialogOpen(false)
       setSelectedStructure(null)
       loadData()
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to delete structure'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to delete structure'
       
       // Check for specific error types
       if (errorMessage.includes('foreign key') || errorMessage.includes('constraint')) {
@@ -460,7 +459,7 @@ export function StructuresTab({ searchQuery }: StructuresTabProps) {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete the structure "{selectedStructure?.structure_code}". This action cannot be undone.
+              This will permanently delete the structure &quot;{selectedStructure?.structure_code}&quot;. This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

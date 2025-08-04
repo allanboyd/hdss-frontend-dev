@@ -41,7 +41,8 @@ export const authServices = {
       const { data, error } = await supabaseAdmin
         .from('role')
         .select('*')
-        .eq('is_system', true)
+        .eq('is_system', false)
+        .eq('is_default', true)
         .order('role_id')
         .limit(1)
         .single()
@@ -92,7 +93,7 @@ export const authServices = {
     password: string
     full_name: string
     phone_number?: string
-  }): Promise<any> {
+  }): Promise<{ authData: unknown; profileData: unknown }> {
     try {
       // First, get the first system role
       const systemRole = await this.getFirstSystemRole()

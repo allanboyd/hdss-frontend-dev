@@ -8,7 +8,6 @@ import {
   Home, 
   Building, 
   Users,
-  TrendingUp,
   Activity
 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"

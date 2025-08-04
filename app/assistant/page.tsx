@@ -7,9 +7,9 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { ProtectedRoute } from "@/components/auth/protected-route"
 import { Sparkles, FileText, BarChart3, Paperclip, X, Send, CheckCircle, MessageCircle } from "lucide-react"
-import { useState, useRef } from "react"
-import { useEffect } from "react"
+import { useState, useRef, useEffect } from "react"
 import ReactMarkdown from 'react-markdown'
+import Image from "next/image"
 
 export default function AssistantPage() {
   const [showAttachModal, setShowAttachModal] = useState(false)
@@ -213,9 +213,11 @@ export default function AssistantPage() {
                                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     {result.plots.map((img: string, i: number) => (
                                       <div key={i} className="bg-gray-50 rounded-lg border flex items-center justify-center p-2 shadow">
-                                        <img
+                                        <Image
                                           src={`data:image/png;base64,${img}`}
                                           alt={`Plot ${i + 1}`}
+                                          width={200}
+                                          height={100}
                                           className="rounded max-h-64 object-contain mx-auto"
                                         />
                                       </div>

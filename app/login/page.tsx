@@ -13,6 +13,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useAuth } from "@/lib/auth-context"
 import { supabase } from "@/lib/supabase"
 import { authServices } from "@/lib/auth-services"
+import { Role } from "@/types/user-management"
+import { Site } from "@/types/site-management"
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -41,11 +43,11 @@ export default function LoginPage() {
     reason: "",
   })
   
-  const [publicRoles, setPublicRoles] = useState<any[]>([])
-  const [sites, setSites] = useState<any[]>([])
+  const [publicRoles, setPublicRoles] = useState<Role[]>([])
+  const [sites, setSites] = useState<Site[]>([])
   const [isLoadingData, setIsLoadingData] = useState(false)
   
-  const { signIn, signUp } = useAuth()
+  const { signIn } = useAuth()
   const router = useRouter()
 
   // Countries data
@@ -192,8 +194,9 @@ export default function LoginPage() {
           router.push('/dashboard')
         }
       }
-    } catch (error: any) {
-      setError(error?.message || 'An unexpected error occurred')
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred'
+      setError(errorMessage)
     } finally {
       setIsLoading(false)
     }

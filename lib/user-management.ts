@@ -15,16 +15,18 @@ import {
 } from '@/types/user-management'
 
 // Helper function to handle Supabase errors
-const handleSupabaseError = async (error: any) => {
-  if (error?.message?.includes('Invalid Refresh Token') || 
-      error?.message?.includes('Refresh Token Not Found')) {
+const handleSupabaseError = async (error: unknown) => {
+  if (error && typeof error === 'object' && 'message' in error && 
+      typeof error.message === 'string' &&
+      (error.message.includes('Invalid Refresh Token') || 
+       error.message.includes('Refresh Token Not Found'))) {
     const result = await handleAuthError(error)
     if (result.shouldRedirect && result.redirectTo) {
       window.location.href = result.redirectTo
       return { data: null, error: 'Authentication required' }
     }
   }
-  return { data: null, error }
+  return { data: null, error: error instanceof Error ? error.message : 'Unknown error' }
 }
 
 // Role CRUD operations

@@ -14,7 +14,6 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import {
   Table,
   TableBody,
@@ -95,8 +94,8 @@ export function DwellingUnitsTab({ searchQuery }: DwellingUnitsTabProps) {
       ])
       setDwellingUnits(dwellingUnitsData)
       setStructures(structuresData)
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to load data'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to load data'
       toast.error(`Error loading data: ${errorMessage}`)
       console.error("Error loading data:", error)
     } finally {
@@ -122,8 +121,8 @@ export function DwellingUnitsTab({ searchQuery }: DwellingUnitsTabProps) {
         description: ""
       })
       loadData()
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to create dwelling unit'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create dwelling unit'
       toast.error(`Error creating dwelling unit: ${errorMessage}`)
       console.error("Error creating dwelling unit:", error)
     }
@@ -150,8 +149,8 @@ export function DwellingUnitsTab({ searchQuery }: DwellingUnitsTabProps) {
         description: ""
       })
       loadData()
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to update dwelling unit'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to update dwelling unit'
       toast.error(`Error updating dwelling unit: ${errorMessage}`)
       console.error("Error updating dwelling unit:", error)
     }
@@ -166,8 +165,8 @@ export function DwellingUnitsTab({ searchQuery }: DwellingUnitsTabProps) {
       setIsDeleteDialogOpen(false)
       setSelectedDwellingUnit(null)
       loadData()
-    } catch (error: any) {
-      const errorMessage = error?.message || 'Failed to delete dwelling unit'
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to delete dwelling unit'
       
       // Check for specific error types
       if (errorMessage.includes('foreign key') || errorMessage.includes('constraint')) {
@@ -266,12 +265,12 @@ export function DwellingUnitsTab({ searchQuery }: DwellingUnitsTabProps) {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="unit_name">Unit Name</Label>
+                  <Label htmlFor="unit_code">Unit Code</Label>
                   <Input
-                    id="unit_name"
-                    value={formData.unit_name}
-                    onChange={(e) => setFormData({ ...formData, unit_name: e.target.value })}
-                    placeholder="e.g., Apartment 1A"
+                    id="unit_code"
+                    value={formData.unit_code}
+                    onChange={(e) => setFormData({ ...formData, unit_code: e.target.value })}
+                    placeholder="e.g., APT1A"
                   />
                 </div>
               </div>
@@ -413,12 +412,12 @@ export function DwellingUnitsTab({ searchQuery }: DwellingUnitsTabProps) {
                 />
               </div>
               <div>
-                <Label htmlFor="edit-unit_name">Unit Name</Label>
+                <Label htmlFor="edit-unit_type">Unit Type</Label>
                 <Input
-                  id="edit-unit_name"
-                  value={formData.unit_name}
-                  onChange={(e) => setFormData({ ...formData, unit_name: e.target.value })}
-                  placeholder="e.g., Apartment 1A"
+                  id="edit-unit_type"
+                  value={formData.unit_type}
+                  onChange={(e) => setFormData({ ...formData, unit_type: e.target.value })}
+                  placeholder="e.g., Apartment, House"
                 />
               </div>
             </div>
@@ -445,7 +444,7 @@ export function DwellingUnitsTab({ searchQuery }: DwellingUnitsTabProps) {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete the dwelling unit "{selectedDwellingUnit?.unit_code}". This action cannot be undone.
+              This will permanently delete the dwelling unit &quot;{selectedDwellingUnit?.unit_code}&quot;. This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
